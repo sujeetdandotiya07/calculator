@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass Calculator</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+
+            /* ⭐ PREMIUM BACKGROUND (GRADIENT + IMAGE OVERLAY) */
+            background:
+                linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.25)),
+                url("/image/image.png");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex items-center justify-center">
+
+    <div class="w-[360px] p-6 rounded-3xl 
+                backdrop-blur-2xl bg-white/10 
+                border border-white/20 shadow-2xl">
+
+        <!-- DISPLAY -->
+        <input name="answer" readonly placeholder="0" class="w-full h-20 text-right text-3xl px-4 rounded-2xl
+            bg-white/20 backdrop-blur-xl
+            text-black placeholder-black/40
+            shadow-inner border border-white/20
+            outline-none" />
+
+        <!-- GRID -->
+        <div class="grid grid-cols-4 gap-3 mt-5">
+
+            <button onclick="append('7')" class="btn num1">7</button>
+            <button onclick="append('8')" class="btn num2">8</button>
+            <button onclick="append('9')" class="btn num3">9</button>
+            <button onclick="append('/')" class="btn op1">÷</button>
+
+            <button onclick="append('4')" class="btn num2">4</button>
+            <button onclick="append('5')" class="btn num3">5</button>
+            <button onclick="append('6')" class="btn num1">6</button>
+            <button onclick="append('*')" class="btn op2">×</button>
+
+            <button onclick="append('1')" class="btn num3">1</button>
+            <button onclick="append('2')" class="btn num1">2</button>
+            <button onclick="append('3')" class="btn num2">3</button>
+            <button onclick="append('-')" class="btn op3">-</button>
+
+            <button onclick="append('0')" class="btn num1">0</button>
+            <button onclick="append('.')" class="btn num2">.</button>
+            <button onclick="calculate()" class="btn equal">=</button>
+            <button onclick="append('+')" class="btn op4">+</button>
+
+            <button onclick="clearAll()" class="btn clear col-span-1">C</button>
+            <button onclick="backspace()" class="btn back col-span-3">⌫</button>
+
+        </div>
+    </div>
+
+    <style>
+        /* BASE BUTTON */
+        .btn {
+            height: 56px;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            color: black;
+            backdrop-filter: blur(1px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+        }
+
+        .btn:active {
+            transform: scale(0.92);
+        }
+
+        /* NUMBERS */
+        .num1 {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .num2 {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .num3 {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        /* OPERATORS */
+        .op1 {
+            background: rgba(255, 165, 0, 0.25);
+        }
+
+        .op2 {
+            background: rgba(255, 0, 150, 0.25);
+        }
+
+        .op3 {
+            background: rgba(0, 200, 255, 0.25);
+        }
+
+        .op4 {
+            background: rgba(255, 255, 0, 0.25);
+        }
+
+        /* SPECIAL */
+        .equal {
+            background: linear-gradient(135deg, #00c853, #64dd17);
+            color: black;
+            font-weight: 800;
+        }
+
+        .clear {
+            background: rgba(255, 0, 0, 0.35);
+        }
+
+        .back {
+            background: rgba(0, 0, 0, 0.35);
+            color: white;
+        }
+    </style>
+
+    <script>
+        let display = document.querySelector("input[name='answer']");
+
+        function append(val) {
+            display.value += val;
+        }
+
+        function clearAll() {
+            display.value = "";
+        }
+
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                display.value = eval(display.value);
+            } catch {
+                display.value = "Error";
+                setTimeout(() => display.value = "", 800);
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (!isNaN(e.key) || "+-*/.".includes(e.key)) {
+                display.value += e.key;
+            }
+            if (e.key === "Enter") calculate();
+            if (e.key === "Backspace") backspace();
+            if (e.key === "Escape") clearAll();
+        });
+    </script>
+
+</body>
+
+</html>
